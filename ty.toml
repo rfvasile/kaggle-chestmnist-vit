@@ -1,0 +1,12 @@
+[environment]
+python = ".venv"
+python-version = "3.12"
+extra-paths = [".venv/kaggle-source"]
+
+[[overrides]]
+include = ["data/**", "metrics/**", "scripts/**", "tests/**", "tools/comint_mpl_show.py"]
+
+[overrides.rules]
+invalid-argument-type = "ignore"
+no-matching-overload = "ignore"
+invalid-assignment = "ignore"

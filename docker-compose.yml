@@ -1,0 +1,62 @@
+name: kaggle-local
+
+x-kaggle-common: &kaggle-common
+  working_dir: /kaggle/working
+  environment:
+    PYTHONPATH: /kaggle/working
+    # From the calling shell or ./.env (gitignored); SSH sessions don't load the fish config
+    KAGGLE_API_TOKEN: ${KAGGLE_API_TOKEN}
+    WANDB_API_KEY: ${WANDB_API_KEY}
+    # Root in the container vs a uid-1000 worktree: without this, git fails and wandb records no commit
+    GIT_CONFIG_COUNT: "1"
+    GIT_CONFIG_KEY_0: safe.directory
+    GIT_CONFIG_VALUE_0: /kaggle/working
+  volumes:
+    - .:/kaggle/working
+    - ./input:/kaggle/input:ro
+    - kaggle-cache:/root/.cache
+  ports:
+    - "127.0.0.1:${JUPYTER_PORT:-8888}:8888"
+    - "127.0.0.1:${MARIMO_PORT:-2718}:2718"
+    - "127.0.0.1:${DEBUGPY_PORT:-5678}:5678"
+  shm_size: "${SHM_SIZE:-16gb}"
+  ipc: host
+  command:
+    - bash
+    - -lc
+    # Fix permissions, so directories are editable from host.
+    # The .cache must be owned by root, otherwise the dir is ignored
+    # Disconnected kernels idle for a day are culled, so a laptop asleep overnight keeps its session
+    - find /kaggle/working \( -name .venv -o -name .git \) -prune -o ! -uid 1000 -exec chown 1000:1000 '{}' + ;
+      find /root/.cache ! -uid 0 -exec chown 0:0 '{}' + ;
+      pip install -r /kaggle/working/requirements.txt &&
+      jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+      --ServerApp.root_dir=/kaggle/working --ServerApp.token='' --ServerApp.password=''
+      --ServerApp.allow_origin='*'
+      --MappingKernelManager.cull_idle_timeout=86400
+      --MappingKernelManager.cull_interval=120
+  stdin_open: true
+  tty: true
+
+services:
+  cpu:
+    <<: *kaggle-common
+    profiles: ["cpu"]
+    image: gcr.io/kaggle-images/python:latest
+    container_name: kaggle-notebooks-cpu
+
+  gpu:
+    <<: *kaggle-common
+    profiles: ["gpu"]
+    image: gcr.io/kaggle-gpu-images/python:latest
+    container_name: kaggle-notebooks-gpu
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+volumes:
+  kaggle-cache:

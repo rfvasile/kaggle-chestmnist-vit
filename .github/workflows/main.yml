@@ -1,0 +1,36 @@
+name: upload
+
+# Publish the source as a Kaggle Dataset, for offline kernels to attach
+on:
+  workflow_dispatch:
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upload datasets
+        uses: jaimevalero/push-kaggle-dataset@v3
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+
+        with:
+          id: "rfvasile/<competition-slug>-src"
+          title: "<competition title> — pipeline source"
+          subtitle: "Config-driven pipeline"
+          description: >
+            The runners (train_gluon.py, train_nn.py, infer_nn.py), experiment.py, and the modules a
+            config selects (configs/, data/, models/, postprocess/, metrics/).
+          files:  |
+                  *.py
+                  models/*.py
+                  data/*.py
+                  configs/*.py
+                  configs/*.json
+                  scripts/*.py
+                  postprocess/*.py
+                  metrics/*.py
+                  requirements.txt
+
+          is_public: true
