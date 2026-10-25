@@ -16,7 +16,23 @@ cfg.model = None
 # Data
 cfg.raw_dir = f"input/{COMPETITION}"
 cfg.datamount = "datamount"
-cfg.label = "target"
+cfg.labels = [
+    "atelectasis",
+    "cardiomegaly",
+    "effusion",
+    "infiltration",
+    "mass",
+    "nodule",
+    "pneumonia",
+    "pneumothorax",
+    "consolidation",
+    "edema",
+    "emphysema",
+    "fibrosis",
+    "pleural",
+    "hernia",
+]
+
 cfg.n_folds = 5
 cfg.rebuild = False
 

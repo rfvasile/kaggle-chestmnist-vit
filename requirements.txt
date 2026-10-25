@@ -7,3 +7,4 @@ wandb>=0.25.1
 marimo
 vegafusion
 transformers>=5.16.1
+iterative-stratification
