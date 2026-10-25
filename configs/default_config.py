@@ -2,15 +2,16 @@
 
 from types import SimpleNamespace
 
-COMPETITION = "<competition-slug>"
+COMPETITION = "22-aie-437-vision-transformer-from-scratch-on-chest-mnist"
 
 cfg = SimpleNamespace()
 
 # Modules, as import paths; the runners' docstrings list what each exposes
+cfg.competition = COMPETITION
 cfg.dataset = None
 cfg.post_process_pipeline = None
 cfg.metric = None
-cfg.model = None  # None runs under train_gluon.py
+cfg.model = None
 
 # Data
 cfg.raw_dir = f"input/{COMPETITION}"

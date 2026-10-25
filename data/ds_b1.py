@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import pandas as pd
+from kaggle.api.kaggle_api_extended import KaggleApi
 from sklearn.model_selection import StratifiedKFold
 
 ID_COL = "id"
@@ -26,16 +27,22 @@ def assign_folds(cfg, df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build(cfg) -> None:
-    """Raw CSVs -> parquets. A no-op once they exist, unless cfg.rebuild."""
+    """Raw CSVs, downloaded if missing -> parquets. A no-op once they exist, unless cfg.rebuild."""
     # Skip when already built
     out = data_dir(cfg)
     if all((out / f"{split}.parquet").exists() for split in SPLITS) and not cfg.rebuild:
         print(f"dataset already built at {out}")
         return
 
+    # Download competition data if not present
+    raw = Path(cfg.raw_dir)
+    if not raw.exists():
+        api = KaggleApi()
+        api.authenticate()
+        api.competition_download_files(cfg.competition, path=cfg.raw_dir, unzip=True)
+
     # Train split, with folds; test split
     out.mkdir(parents=True, exist_ok=True)
-    raw = Path(cfg.raw_dir)
     train = assign_folds(cfg, pd.read_csv(raw / "train.csv"))
     train.to_parquet(out / "train.parquet", index=False)
     pd.read_csv(raw / "test.csv").to_parquet(out / "test.parquet", index=False)
