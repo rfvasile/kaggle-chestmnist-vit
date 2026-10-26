@@ -1,7 +1,4 @@
-"""Exploratory analysis of the ChestMNIST data; docs/data.md says why each cell is here.
-
-python scripts/eda.py    # or cell by cell in the REPL
-"""
+"""Exploratory analysis of the ChestMNIST data; docs/data.md says why each cell is here."""
 
 # %%
 from copy import deepcopy
