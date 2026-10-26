@@ -1,4 +1,4 @@
-"""t0 decoder: the sigmoid of the logit is the prediction."""
+"""t0 decoder: the sigmoid of each label's logit is its prediction."""
 
 import numpy as np
 import pandas as pd
@@ -10,7 +10,7 @@ __all__ = ["post_process_pipeline", "sweep_params", "write_submission"]
 
 
 def post_process_pipeline(cfg, data: dict, df: pd.DataFrame) -> pd.DataFrame:
-    """One prediction per entry of data["idx"], a row position in df."""
+    """One row per entry of data["idx"], a row position in df, with a pred_<label> column per label."""
     out = df.reset_index(drop=True).iloc[np.asarray(data["idx"])].copy()
-    out["pred"] = torch.sigmoid(torch.as_tensor(data["logits"])).numpy()
-    return out
+    probs = torch.sigmoid(torch.as_tensor(data["logits"])).numpy()
+    return out.assign(**{f"pred_{label}": probs[:, i] for i, label in enumerate(cfg.labels)})

@@ -17,6 +17,7 @@ Competition: [Vision Transformer from Scratch on ChestMNIST](https://www.kaggle.
 | EDA | `scripts/eda.py`, `docs/data.md` |
 | Evaluation metric | `metrics/metric_b1.py` |
 | Cross-validation | folds in `data/ds_b1.py` |
+| Postprocess | `postprocess/pp_t0.py` |
 
 ## Run
 
