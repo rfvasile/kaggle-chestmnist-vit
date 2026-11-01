@@ -12,11 +12,6 @@ CONFIG_NAMES = sorted(p.stem for p in (ROOT / "configs").glob("cfg_*.py"))
 
 # runner -> seam -> names the runner imports from that module
 SEAMS = {
-    "train_gluon.py": {
-        "dataset": ("build", "load"),
-        "post_process_pipeline": ("post_process_pipeline", "sweep_params", "write_submission"),
-        "metric": ("calc_metric",),
-    },
     "train_nn.py": {
         "dataset": ("load", "CustomDataset", "tr_collate_fn", "val_collate_fn", "batch_to_device"),
         "model": ("Net",),
@@ -29,10 +24,6 @@ SEAMS = {
 # Helpers
 def load_cfg(name):
     return deepcopy(import_module(f"configs.{name}").cfg)
-
-
-def runner_of(cfg) -> str:
-    return "train_nn.py" if cfg.model else "train_gluon.py"
 
 
 # Config discovery
@@ -58,7 +49,7 @@ def test_config_name_matches_its_filename(name):
 @pytest.mark.parametrize("name", CONFIG_NAMES)
 def test_config_seams_expose_what_the_runner_imports(name):
     cfg = load_cfg(name)
-    for seam, required in SEAMS[runner_of(cfg)].items():
+    for seam, required in SEAMS["train_nn.py"].items():
         module = import_module(getattr(cfg, seam))
         missing = [fn for fn in required if not callable(getattr(module, fn, None))]
         assert not missing, f"{name}: {getattr(cfg, seam)} is missing {missing}"

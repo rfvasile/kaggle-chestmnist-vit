@@ -1,7 +1,7 @@
 """Seed spread per config: the aggregation the W&B UI does not do.
 
 python scripts/runs.py                  # every config in the project
-python scripts/runs.py cfg_b1           # one config
+python scripts/runs.py cfg_t0           # one config
 """
 
 import sys

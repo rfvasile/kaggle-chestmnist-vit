@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 
 # %%
 # Data
-cfg = deepcopy(import_module("configs.cfg_b1").cfg)
+cfg = deepcopy(import_module("configs.default_config").cfg)
+cfg.dataset = "data.ds_b1"
 ds = import_module(cfg.dataset)
 ds.build(cfg)
 train = ds.load(cfg, "train")

@@ -13,7 +13,7 @@ Competition: [Vision Transformer from Scratch on ChestMNIST](https://www.kaggle.
 
 | Stage | Lives in |
 |---|---|
-| Dataset | `data/ds_b1.py` |
+| Dataset | `data/ds_b1.py` (arrays, folds), `data/ds_t0.py` (model inputs) |
 | EDA | `scripts/eda.py`, `docs/data.md` |
 | Evaluation metric | `metrics/metric_b1.py` |
 | Cross-validation | folds in `data/ds_b1.py` |
@@ -22,7 +22,6 @@ Competition: [Vision Transformer from Scratch on ChestMNIST](https://www.kaggle.
 ## Run
 
 ``` shell
-docker compose exec -T gpu python train_gluon.py -C cfg_b1
 docker compose exec -T gpu python train_nn.py -C cfg_t0 --epochs 1
 docker compose exec -T gpu python -m pytest tests/ -q
 ```

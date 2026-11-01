@@ -39,18 +39,6 @@ cfg.rebuild = False
 # Split seed, apart from cfg.seed so seed replicas share one split
 cfg.fold_seed = 3
 
-# AutoGluon (train_gluon.py)
-cfg.problem_type = "binary"
-cfg.eval_metric = "log_loss"
-cfg.positive_class = 1  # None scores predict() instead of predict_proba()
-cfg.presets = "medium"
-cfg.hyperparameters = None
-cfg.time_limit = None
-cfg.ignored_columns = []
-cfg.num_gpus = 0
-cfg.refit_full = False
-cfg.row_id_cols = []
-
 # Torch (train_nn.py)
 cfg.folds = [0, 1, 2, 3, 4]
 cfg.epochs = 3
@@ -83,5 +71,4 @@ cfg.name = None
 cfg.output_dir = None
 cfg.seed = 3  # -1 draws a random one and records it
 cfg.selection_metric = "auc"  # a key of calc_metric's dict
-cfg.keep_predictor = False
 cfg.test = True

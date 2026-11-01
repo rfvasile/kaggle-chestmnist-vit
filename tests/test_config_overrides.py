@@ -10,7 +10,7 @@ from experiment import apply_overrides, coerce, format_override
 
 @pytest.fixture
 def cfg():
-    return deepcopy(import_module("configs.cfg_b1").cfg)
+    return deepcopy(import_module("configs.cfg_t0").cfg)
 
 
 # Overrides
@@ -22,26 +22,26 @@ def test_override_keeps_the_type_already_in_the_config(cfg):
 
 
 def test_override_reads_bools_as_bools(cfg):
-    """`--keep_predictor False` must not become the truthy string "False"."""
-    apply_overrides(cfg, ["--keep_predictor", "False"])
-    assert cfg.keep_predictor is False
+    """`--keep_best False` must not become the truthy string "False"."""
+    apply_overrides(cfg, ["--keep_best", "False"])
+    assert cfg.keep_best is False
 
 
 def test_override_rejects_a_non_boolean_for_a_bool_key(cfg):
     with pytest.raises(SystemExit, match="expected True or False"):
-        apply_overrides(cfg, ["--keep_predictor", "yes"])
+        apply_overrides(cfg, ["--keep_best", "yes"])
 
 
 def test_override_parses_json_for_a_none_valued_key(cfg):
-    apply_overrides(cfg, ["--time_limit", "600", "--hyperparameters", '{"CAT": [{}]}'])
-    assert cfg.time_limit == 600
-    assert cfg.hyperparameters == {"CAT": [{}]}
+    apply_overrides(cfg, ["--swa_start_epoch", "2", "--swa_steps", "100"])
+    assert cfg.swa_start_epoch == 2
+    assert cfg.swa_steps == 100
 
 
 def test_override_falls_back_to_a_string_when_a_none_key_is_not_json(cfg):
-    cfg.presets = None
-    apply_overrides(cfg, ["--presets", "best_quality"])
-    assert cfg.presets == "best_quality"
+    cfg.schedule = None
+    apply_overrides(cfg, ["--schedule", "cosine"])
+    assert cfg.schedule == "cosine"
 
 
 def test_override_parses_json_for_a_list_key(cfg):
@@ -72,7 +72,7 @@ def test_empty_overrides_change_nothing(cfg):
 
 # coerce and the reproduce line
 def test_coerce_leaves_an_existing_string_alone():
-    """A str key must not go through JSON, or `--presets 600` becomes an int."""
+    """A str key must not go through JSON, or `--notes 600` becomes an int."""
     assert coerce("600", "medium") == "600"
 
 

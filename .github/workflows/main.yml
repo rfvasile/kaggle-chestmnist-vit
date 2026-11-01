@@ -20,7 +20,7 @@ jobs:
           title: "<competition title> — pipeline source"
           subtitle: "Config-driven pipeline"
           description: >
-            The runners (train_gluon.py, train_nn.py, infer_nn.py), experiment.py, and the modules a
+            The runners (train_nn.py, infer_nn.py), experiment.py, and the modules a
             config selects (configs/, data/, models/, postprocess/, metrics/).
           files:  |
                   *.py

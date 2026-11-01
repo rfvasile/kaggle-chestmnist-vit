@@ -18,9 +18,9 @@ def test_shipped_config_declares_every_key_it_sets(name):
 
 
 def test_misspelled_key_is_refused_rather_than_ignored():
-    cfg = deepcopy(import_module("configs.cfg_b1").cfg)
-    cfg.presetz = "extreme"
-    with pytest.raises(SystemExit, match="presetz"):
+    cfg = deepcopy(import_module("configs.cfg_t0").cfg)
+    cfg.epochz = 5
+    with pytest.raises(SystemExit, match="epochz"):
         check_config_keys(cfg, defaults)
 
 

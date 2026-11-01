@@ -83,4 +83,6 @@ if __name__ == "__main__":
     from copy import deepcopy
     from importlib import import_module
 
-    build(deepcopy(import_module("configs.cfg_b1").cfg))
+    cfg = deepcopy(import_module("configs.default_config").cfg)
+    cfg.dataset = "data.ds_b1"
+    build(cfg)

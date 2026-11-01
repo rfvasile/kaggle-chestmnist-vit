@@ -4,9 +4,12 @@ import numpy as np
 import pandas as pd
 import torch
 
-from postprocess.pp_b1 import sweep_params, write_submission
+from data.ds_b1 import ID_COL
 
-__all__ = ["post_process_pipeline", "sweep_params", "write_submission"]
+
+def sweep_params(cfg):
+    """The decoder grid for one run, as dicts of post_process_pipeline kwargs; nothing to sweep here."""
+    yield {}
 
 
 def post_process_pipeline(cfg, data: dict, df: pd.DataFrame) -> pd.DataFrame:
@@ -14,3 +17,11 @@ def post_process_pipeline(cfg, data: dict, df: pd.DataFrame) -> pd.DataFrame:
     out = df.reset_index(drop=True).iloc[np.asarray(data["idx"])].copy()
     probs = torch.sigmoid(torch.as_tensor(data["logits"])).numpy()
     return out.assign(**{f"pred_{label}": probs[:, i] for i, label in enumerate(cfg.labels)})
+
+
+def write_submission(cfg, pred_df: pd.DataFrame, path) -> pd.DataFrame:
+    """Write this competition's submission file: id plus each label's probability."""
+    preds = [f"pred_{label}" for label in cfg.labels]
+    out = pred_df[[ID_COL, *preds]].rename(columns=dict(zip(preds, cfg.labels)))
+    out.to_csv(path, index=False)
+    return out
