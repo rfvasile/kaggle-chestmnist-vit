@@ -1,0 +1,11 @@
+[environment]
+python = ".venv"
+python-version = "3.12"
+
+[[overrides]]
+include = ["data/**", "metrics/**", "scripts/**", "tests/**"]
+
+[overrides.rules]
+invalid-argument-type = "ignore"
+no-matching-overload = "ignore"
+invalid-assignment = "ignore"

@@ -1,0 +1,44 @@
+[project]
+name = "kaggle-chestmnist-vit"
+version = "0.1.0"
+requires-python = "==3.12.*"
+dependencies = [
+    "autogluon-tabular[tabarena]==1.6.1",
+    "kaggle>=2.2.2",
+    "kagglehub>=1.0.1",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "plotly",
+    "scikit-learn",
+    "torch",
+    "torchvision",
+    "tqdm",
+    "transformers>=5.16.1",
+    "wandb",
+]
+
+[dependency-groups]
+dev = [
+    "debugpy",
+    "jupyterlab",
+    "jupytext",
+    "jurigged",
+    "marimo",
+    "pytest",
+    "vegafusion",
+]
+
+[tool.uv]
+package = false
+# Kaggle's platform, the only one with CUDA wheels
+environments = ["sys_platform == 'linux' and platform_machine == 'x86_64'"]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
