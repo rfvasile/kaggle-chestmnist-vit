@@ -2,7 +2,7 @@
 
 from types import SimpleNamespace
 
-COMPETITION = "<competition>"
+COMPETITION = "22-aie-437-vision-transformer-from-scratch-on-chest-mnist"
 
 cfg = SimpleNamespace()
 

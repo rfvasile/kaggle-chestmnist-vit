@@ -1,10 +1,10 @@
-# <title> #
+# Kaggle Chest MNIST with ViT #
 
 ## Setup ##
 
 ``` shell
 uv sync
-export COMP=<competition>
+export COMP=22-aie-437-vision-transformer-from-scratch-on-chest-mnist
 uv run kaggle competitions download -c $COMP -p input/$COMP
 bash -c "cd input/$COMP && unzip -o $COMP.zip && rm $COMP.zip"
 ```
