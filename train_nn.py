@@ -6,7 +6,6 @@ import importlib
 import json
 import shlex
 import shutil
-import sys
 import time
 from argparse import ArgumentParser
 from copy import deepcopy
@@ -27,12 +26,6 @@ from transformers import get_cosine_schedule_with_warmup, get_linear_schedule_wi
 import wandb
 from experiment import apply_overrides, check_config_keys, format_override, git_state, to_python
 from utils import calc_grad_norm, predict, set_seed
-
-# Hot reload in a REPL only, never under a running fit
-if hasattr(sys, "ps1") or "ipykernel" in sys.modules:
-    from jurigged import watch
-
-    watch(".")
 
 SCHEDULES = {"linear": get_linear_schedule_with_warmup, "cosine": get_cosine_schedule_with_warmup}
 
