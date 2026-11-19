@@ -17,6 +17,10 @@ def data_dirs(cfg) -> tuple[Path, Path]:
     return root / f"prepared_f{cfg.fold_seed}", root / "prepared"
 
 
+def raw_image_dir(cfg, split: str) -> Path:
+    return Path(cfg.raw_dir) / split / split
+
+
 def assign_folds(cfg, df: pd.DataFrame) -> pd.DataFrame:
     """Folds stratified on cfg.labels, drawn from cfg.fold_seed so every model seed shares them."""
     out = df.copy()
@@ -48,8 +52,8 @@ def build(cfg) -> None:
         image_dir.mkdir(parents=True, exist_ok=True)
         train_ids = pd.read_csv(raw / "train_labels.csv")[ID_COL]
         test = pd.read_csv(raw / "sample_submission.csv")[[ID_COL]]
-        np.save(image_dir / "train_images.npy", read_images(raw / "train" / "train", train_ids))
-        np.save(image_dir / "test_images.npy", read_images(raw / "test" / "test", test[ID_COL]))
+        np.save(image_dir / "train_images.npy", read_images(raw_image_dir(cfg, "train"), train_ids))
+        np.save(image_dir / "test_images.npy", read_images(raw_image_dir(cfg, "test"), test[ID_COL]))
         test.assign(img_idx=np.arange(len(test))).to_parquet(image_dir / "test.parquet", index=False)
         print(f"built {image_dir}: {len(train_ids)} train / {len(test)} test images")
     else:
