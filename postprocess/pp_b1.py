@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from data.ds_b1 import ID_COL
+from data.prepare import ID_COL
 
 
 def sweep_params(cfg):

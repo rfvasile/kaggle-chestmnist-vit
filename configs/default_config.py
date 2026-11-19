@@ -16,7 +16,22 @@ cfg.model = None  # None runs under train_gluon.py
 cfg.competition = COMPETITION
 cfg.raw_dir = f"input/{COMPETITION}"
 cfg.datamount = "datamount"
-cfg.label = "<label>"
+cfg.labels = [
+    "atelectasis",
+    "cardiomegaly",
+    "effusion",
+    "infiltration",
+    "mass",
+    "nodule",
+    "pneumonia",
+    "pneumothorax",
+    "consolidation",
+    "edema",
+    "emphysema",
+    "fibrosis",
+    "pleural",
+    "hernia",
+]
 cfg.n_folds = 5
 cfg.rebuild = False
 

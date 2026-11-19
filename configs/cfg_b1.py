@@ -4,7 +4,7 @@ import os
 from copy import deepcopy
 
 from configs.default_config import cfg as basic_cfg
-from data.ds_b1 import ID_COL
+from data.prepare import ID_COL
 
 cfg = deepcopy(basic_cfg)
 

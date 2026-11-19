@@ -1,27 +1,17 @@
-"""t0 dataset: ds_b1's numeric columns as one float tensor."""
-
-from copy import copy
+"""t0 dataset: the prepared numeric columns as one float tensor."""
 
 import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import Dataset, default_collate
 
-from data import ds_b1
-from data.ds_b1 import ID_COL
-
-
-def b1_cfg(cfg):
-    """cfg pointed at ds_b1, to reuse its parquets and folds."""
-    b1 = copy(cfg)
-    b1.dataset = "data.ds_b1"
-    return b1
+from data import prepare
+from data.prepare import ID_COL  # the runners read ds.ID_COL
 
 
 def load(cfg, split: str = "train") -> pd.DataFrame:
-    b1 = b1_cfg(cfg)
-    ds_b1.build(b1)
-    return ds_b1.load(b1, split)[0]
+    prepare.build(cfg)
+    return prepare.load(cfg, split)
 
 
 def features(cfg, df: pd.DataFrame) -> np.ndarray:
