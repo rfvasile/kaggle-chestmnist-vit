@@ -20,6 +20,7 @@ cfg.metric = "metrics.metric_b1"
 # Model
 cfg.hidden = 256
 cfg.dropout = 0.1
+cfg.patch_size = 4  # must divide 28: 2, 4, 7 or 14
 
 # Training
 cfg.epochs = 10
